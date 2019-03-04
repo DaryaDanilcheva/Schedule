@@ -14,49 +14,11 @@ namespace ConsoleApp1
         {
             string weeks = Parse();
 
-            List<string> weekList = MySplit(weeks, new string[] {"</TABLE>"});
-
-            string week1 = weekList[0];
-            string week2 = weekList[1];
-
-            List<string> daysOfWeek1 = MySplit(week1, new string[] {"</TR>"});
-            List<string> daysOfWeek2 = MySplit(week2, new string[] {"</TR>"});
+            List<string> daysOfWeek1 = MySplit(weeks, new string[] {"</TR>"});
 
             List<string> lessonOfWeek1 = Clean(daysOfWeek1);
-            List<string> lessonOfWeek2 = new List<string>();
 
-
-
-            while (lessonOfWeek1.Count > 0)
-            {
-                List<string> today = new List<string>();
-                if (lessonOfWeek1.Count > 0)
-                {
-                    for (int i=0;i<9;i++)
-                    {
-                        if(lessonOfWeek1[0]=="" && i==0 || i==0 && lessonOfWeek1[0] == null || i==0 && lessonOfWeek1[0] == "_")
-                        {
-                            lessonOfWeek1.Remove(lessonOfWeek1[0]);
-                            break;
-                        } else
-                        {
-                            today.Add(lessonOfWeek1[0]);
-                            lessonOfWeek1.Remove(lessonOfWeek1[0]);
-                            Console.WriteLine(i + ") " + today[i]);
-                        }
-                    
-                    }
-                }
-                
-                //foreach(var les in today)
-                //{
-                    
-                //}
-                //Console.WriteLine("\n new");
-            }
-
-            
-
+            ShowSchedule(lessonOfWeek1);
 
             Console.ReadKey();
         }
@@ -67,7 +29,7 @@ namespace ConsoleApp1
             string response = webClient.DownloadString("http://www.ulstu.ru/schedule/students/part1/55.htm");
             int start = response.IndexOf("<TABLE");
             int end = response.LastIndexOf("</TABLE>");
-            string weeks = response.Substring(start, end+1 - start);
+            string weeks = response.Substring(start, end - start);
             return weeks;
         }
 
@@ -99,16 +61,40 @@ namespace ConsoleApp1
                             {
                                 newLes = newLes.Remove(start, end+1 - start);
                             } 
-                        }
-                        else
+                        } else
+                        {
                             skobka = false;
-                        
+                        }
                     }
                     lessonOfWeek.Add(newLes.Trim());
                 }
             }
 
             return lessonOfWeek;
+        }
+
+        static void ShowSchedule(List<string> lessonOfWeek)
+        {
+            while (lessonOfWeek.Count > 0)
+            {
+                List<string> today = new List<string>();
+                if (lessonOfWeek.Count > 0)
+                {
+                    for (int i = 0; i < 9; i++)
+                    {
+                        if (lessonOfWeek[0] == "" && i == 0 || i == 0 && lessonOfWeek[0] == null || i == 0 && lessonOfWeek[0] == "_")
+                        {
+                            lessonOfWeek.Remove(lessonOfWeek[0]);
+                            break;
+                        } else
+                        {
+                            today.Add(lessonOfWeek[0]);
+                            lessonOfWeek.Remove(lessonOfWeek[0]);
+                            Console.WriteLine(i + ") " + today[i]);
+                        }
+                    }
+                }
+            }
         }
     }
 }
