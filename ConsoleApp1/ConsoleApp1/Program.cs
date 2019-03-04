@@ -27,11 +27,37 @@ namespace ConsoleApp1
 
 
 
-            foreach(var lesson in lessonOfWeek1)
+            while (lessonOfWeek1.Count > 0)
             {
-                Console.Write(lesson + "\n\n\n");
+                List<string> today = new List<string>();
+                if (lessonOfWeek1.Count > 0)
+                {
+                    for (int i=0;i<9;i++)
+                    {
+                        if(lessonOfWeek1[0]=="" && i==0 || i==0 && lessonOfWeek1[0] == null || i==0 && lessonOfWeek1[0] == "_")
+                        {
+                            lessonOfWeek1.Remove(lessonOfWeek1[0]);
+                            break;
+                        } else
+                        {
+                            today.Add(lessonOfWeek1[0]);
+                            lessonOfWeek1.Remove(lessonOfWeek1[0]);
+                            Console.WriteLine(i + ") " + today[i]);
+                        }
+                    
+                    }
+                }
+                
+                //foreach(var les in today)
+                //{
+                    
+                //}
+                //Console.WriteLine("\n new");
             }
+
             
+
+
             Console.ReadKey();
         }
 
@@ -78,7 +104,7 @@ namespace ConsoleApp1
                             skobka = false;
                         
                     }
-                    lessonOfWeek.Add(newLes);
+                    lessonOfWeek.Add(newLes.Trim());
                 }
             }
 
