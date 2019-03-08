@@ -19,22 +19,46 @@ namespace ConsoleApp1
 
             List<string> daysOfWeek1 = MySplit(weeks[0], new string[] {"</TR>"});
             List<string> daysOfWeek2 = MySplit(weeks[1], new string[] { "</TR>" });
+
             List<string> lessonOfWeek1 = Clean(daysOfWeek1);
             List<string> lessonOfWeek2 = Clean(daysOfWeek2);
 
-            week1.Tuesday = ShowSchedule(lessonOfWeek1, "Втр");
-            week2.Wednesday = ShowSchedule(lessonOfWeek2, "Срд");
+            week1 = FillWeek(week1, lessonOfWeek1);
+            week2 = FillWeek(week2, lessonOfWeek2);
 
-            foreach(var item in week1.Tuesday)
-            {
-                Console.WriteLine(item);
-            }
-            foreach (var item in week2.Wednesday)
-            {
-                Console.WriteLine(item);
-            }
+            ShowSchedule(week1);
+            ShowSchedule(week2);
 
             Console.ReadKey();
+        }
+
+        static Week FillWeek(Week week, List<string> lessonOfWeek)
+        {
+            week.Monday = FillSchedule( lessonOfWeek, "Пнд");
+            week.Tuesday = FillSchedule( lessonOfWeek, "Втр");
+            week.Wednesday = FillSchedule( lessonOfWeek, "Срд");
+            week.Thurstday = FillSchedule( lessonOfWeek, "Чтв");
+            week.Friday = FillSchedule( lessonOfWeek, "Птн");
+            week.Saturday = FillSchedule( lessonOfWeek, "Сбт");
+            return week;
+        }
+
+        static void ShowSchedule(Week week)
+        {
+            ShowDay(week.Monday);
+            ShowDay(week.Tuesday);
+            ShowDay(week.Wednesday);
+            ShowDay(week.Thurstday);
+            ShowDay(week.Friday);
+            ShowDay(week.Saturday);
+        }
+
+        static void ShowDay(List<string> day)
+        {
+            foreach (var item in day)
+            {
+                Console.WriteLine(item);
+            }
         }
 
         static List<string> Parse()
@@ -96,36 +120,18 @@ namespace ConsoleApp1
             return lessonOfWeek;
         }
 
-        static List<string> ShowSchedule(List<string> lessonOfWeek, string day)
+        static List<string> FillSchedule(List<string> lessonOfWeek, string day)
         {
             List<string> today = new List<string>();
-            while (lessonOfWeek.Count > 0)
+            for(int i = 0; i < lessonOfWeek.Count; i++)
             {
-                if (lessonOfWeek.Count > 0)
+                if (lessonOfWeek[i].Contains(day))
                 {
-                    if (lessonOfWeek[0].Contains(day))
+                    for (int j = 0; j < 9; j++)
                     {
-                        for (int i = 0; i < 9; i++)
-                        {
-                            today.Add(i + ") " + lessonOfWeek[0]);
-                            lessonOfWeek.Remove(lessonOfWeek[0]);
-                        }
-                    } else
-                    {
-                        lessonOfWeek.Remove(lessonOfWeek[0]);
+                        today.Add(j + ") " + lessonOfWeek[i]);
+                        i++;
                     }
-
-
-                        //if (lessonOfWeek[0] == "" && i == 0 || i == 0 && lessonOfWeek[0] == null || i == 0 && lessonOfWeek[0] == "_")
-                        //{
-                        //    lessonOfWeek.Remove(lessonOfWeek[0]);
-                        //    break;
-                        //} else
-                        //{
-                            
-
-                        //}
-                    
                 }
             }
             return today;
